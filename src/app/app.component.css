@@ -20,6 +20,10 @@
     margin-top: 16px;
   }
   
+  .mat-button-toggle {
+    font-size: 80%;
+  }
+
   p {
     margin-top: 16px;
     font-weight: bold;

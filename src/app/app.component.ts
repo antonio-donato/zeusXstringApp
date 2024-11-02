@@ -38,7 +38,7 @@ export class AppComponent {
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       duration: ['8'],
-      startTime: ['08:30'],
+      startTime: ['09:00'],
       endTime: ['18:00'],
       category: ['AVA'],
       subCategory: ['FERIE']
@@ -52,7 +52,7 @@ export class AppComponent {
 
   generateString() {
     const { duration, startTime, endTime, category, subCategory } = this.form.value;
-    this.resultString = `${duration} - ${category} - ${subCategory} - ${startTime} - ${endTime}`;
+    this.resultString = `${duration} ore - ${category} - ${subCategory} - ${startTime}-${endTime}`;
   }
 
   copyToClipboard() {
