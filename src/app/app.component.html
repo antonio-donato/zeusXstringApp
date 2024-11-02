@@ -9,16 +9,18 @@
     <mat-form-field>
       <input matInput placeholder="End Time" formControlName="endTime" type="time">
     </mat-form-field>
-    <mat-form-field>
-      <mat-select placeholder="Categoria" formControlName="category">
-        <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-select placeholder="Sub-Category" formControlName="subCategory">
-        <mat-option *ngFor="let subCategory of subCategories" [value]="subCategory">{{ subCategory }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div>
+      <label>Categoria</label>
+      <mat-button-toggle-group formControlName="category" appearance="legacy">
+        <mat-button-toggle *ngFor="let category of categories" [value]="category">{{ category }}</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div>
+      <label>Sub-Category</label>
+      <mat-button-toggle-group formControlName="subCategory" appearance="legacy">
+        <mat-button-toggle *ngFor="let subCategory of subCategories" [value]="subCategory">{{ subCategory }}</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
     <div class="buttons-container">
       <button mat-raised-button color="primary" (click)="generateString()">Genera Stringa</button>
       <button mat-raised-button color="accent" (click)="copyToClipboard()">Copia negli Appunti</button>

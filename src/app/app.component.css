@@ -23,5 +23,22 @@
   p {
     margin-top: 16px;
     font-weight: bold;
+    font-family: 'Aptos';
   }
   
+  .category-container,
+  .subcategory-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Distanza tra le righe */
+  }
+  
+  .subcategory-container {
+    margin-top: 10px; /* Distanza tra Categoria e Sub-Category */
+  }
+  
+  label {
+    font-family: 'Aptos';
+    margin-right: 10px;
+  }
+
