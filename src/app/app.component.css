@@ -15,7 +15,7 @@
   }
   
   .buttons-container {
-    display: flex;
+    display:flex;
     justify-content: space-between;
     margin-top: 16px;
   }
@@ -26,19 +26,18 @@
     font-family: 'Aptos';
   }
   
-  .category-container,
-  .subcategory-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px; /* Distanza tra le righe */
-  }
-  
-  .subcategory-container {
-    margin-top: 10px; /* Distanza tra Categoria e Sub-Category */
-  }
-  
   label {
     font-family: 'Aptos';
     margin-right: 10px;
   }
 
+  .form-group {
+    display:grid;
+    align-items: center;
+    margin-bottom: 16px; /* Spazio tra le righe */
+  }
+  
+  .form-group label {
+    margin-right: 16px; /* Spazio tra la label e il gruppo di toggle */
+  }
+  

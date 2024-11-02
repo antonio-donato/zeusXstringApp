@@ -1,7 +1,7 @@
 <div class="form-container">
   <form [formGroup]="form">
     <mat-form-field>
-      <input matInput placeholder="Durata" formControlName="duration" type="time">
+      <input matInput placeholder="Durata" formControlName="duration" type="time" value="08:00">
     </mat-form-field>
     <mat-form-field>
       <input matInput placeholder="Start Time" formControlName="startTime" type="time">
@@ -9,13 +9,13 @@
     <mat-form-field>
       <input matInput placeholder="End Time" formControlName="endTime" type="time">
     </mat-form-field>
-    <div>
-      <label>Categoria</label>
+    <div class="form-group">
+      <label>Category</label>
       <mat-button-toggle-group formControlName="category" appearance="legacy">
         <mat-button-toggle *ngFor="let category of categories" [value]="category">{{ category }}</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
-    <div>
+    <div class="form-group">
       <label>Sub-Category</label>
       <mat-button-toggle-group formControlName="subCategory" appearance="legacy">
         <mat-button-toggle *ngFor="let subCategory of subCategories" [value]="subCategory">{{ subCategory }}</mat-button-toggle>
