@@ -1,25 +1,33 @@
 <div class="form-container">
   <form [formGroup]="form">
-    <mat-form-field>
-      <input matInput placeholder="Durata" formControlName="duration" type="time" value="08:00">
+    <mat-form-field class="hint-on-hover">
+      <label>Durata:</label>
+      <input matInput placeholder="Durata" formControlName="duration" type="number">
+      <mat-hint>Inserisci la durata in ore</mat-hint>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="hint-on-hover">
+      <label>Inizio:</label>
       <input matInput placeholder="Start Time" formControlName="startTime" type="time">
+      <mat-hint>Ora inizio permesso</mat-hint>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="hint-on-hover">
+      <label>Fine:</label>
       <input matInput placeholder="End Time" formControlName="endTime" type="time">
+      <mat-hint>Ora fine permesso</mat-hint>
     </mat-form-field>
-    <div class="form-group">
+    <div class="form-group category-group" class="hint-on-hover">
       <label>Category</label>
-      <mat-button-toggle-group formControlName="category" appearance="legacy">
+      <mat-button-toggle-group formControlName="category" appearance="legacy" class="hint-on-hover">
         <mat-button-toggle *ngFor="let category of categories" [value]="category">{{ category }}</mat-button-toggle>
       </mat-button-toggle-group>
+      <mat-hint>Categoria</mat-hint>
     </div>
-    <div class="form-group">
+    <div class="form-group sub-category-group" class="hint-on-hover">
       <label>Sub-Category</label>
-      <mat-button-toggle-group formControlName="subCategory" appearance="legacy">
+      <mat-button-toggle-group formControlName="subCategory" appearance="legacy" class="hint-on-hover">
         <mat-button-toggle *ngFor="let subCategory of subCategories" [value]="subCategory">{{ subCategory }}</mat-button-toggle>
       </mat-button-toggle-group>
+      <mat-hint>Sub Categoria</mat-hint>
     </div>
     <div class="buttons-container">
       <button mat-raised-button color="primary" (click)="generateString()">Genera Stringa</button>

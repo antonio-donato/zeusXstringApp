@@ -40,4 +40,34 @@
   .form-group label {
     margin-right: 16px; /* Spazio tra la label e il gruppo di toggle */
   }
+
+  .category-group {
+    margin-bottom: 100px !important; /* Aggiunge spazio sotto il gruppo Categoria */
+  }
   
+  .sub-category-group {
+    margin-top: 100px !important; /* Aggiunge spazio sopra il gruppo Sub-Category */
+  }
+  
+  mat-hint {
+    color: gray; /* Cambia il colore del testo degli hints */
+    font-size: 11px; /* Cambia la dimensione del testo degli hints */
+    font-family: "Aptos";
+  }
+
+  .hint-on-hover mat-form-field {
+    width: 100%;
+  }
+
+  .hint-on-hover mat-hint {
+    display: none; /* Nasconde l'hint di default */
+    white-space: normal;
+  }
+  
+  .hint-on-hover:hover mat-hint {
+    display: block; /* Mostra l'hint al passaggio del mouse */
+  }
+
+  .hint-on-hover mat-button-toggle-group {
+    width: 100%;
+  }

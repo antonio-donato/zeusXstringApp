@@ -30,11 +30,11 @@ export class AppComponent {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      duration: [''],
-      startTime: [''],
-      endTime: [''],
-      category: [''],
-      subCategory: ['']
+      duration: ['8'],
+      startTime: ['08:30'],
+      endTime: ['18:00'],
+      category: ['AVA'],
+      subCategory: ['FERIE']
     });
   }
 
