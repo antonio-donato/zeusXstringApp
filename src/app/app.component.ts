@@ -26,7 +26,14 @@ export class AppComponent {
   resultString: string = '';
 
   categories = ['AVA', 'PK', 'PAR', 'PP'];
-  subCategories = ['FERIE', 'ROL', 'EX-FEST', 'PAR'];
+/*  subCategories = ['FERIE', 'ROL', 'EX-FEST', 'PAR']; */
+    subCategoriesMap: { [key: string]: string[] } = {
+      'AVA': ['FERIE', 'ROL', 'EX-FEST', 'PAR'],
+      'PK': ['PERMESSO 104_CF ASSISTITO'],
+      'PAR': ['CONGEDO OBBLIGATORIO PADRE', 'CONGEDO PARENTALE FIGLIO'],
+      'PP': ['ESAME', 'STUDIO N ORE']
+  };
+  subCategories = this.subCategoriesMap['AVA'];
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -35,6 +42,11 @@ export class AppComponent {
       endTime: ['18:00'],
       category: ['AVA'],
       subCategory: ['FERIE']
+    });
+
+    this.form.get('category')?.valueChanges.subscribe(selectedCategory => {
+      this.subCategories = this.subCategoriesMap[selectedCategory];
+      this.form.get('subCategory')?.setValue(this.subCategories[0]);
     });
   }
 

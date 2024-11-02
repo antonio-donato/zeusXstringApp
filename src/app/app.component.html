@@ -20,14 +20,12 @@
       <mat-button-toggle-group formControlName="category" appearance="legacy" class="hint-on-hover">
         <mat-button-toggle *ngFor="let category of categories" [value]="category">{{ category }}</mat-button-toggle>
       </mat-button-toggle-group>
-      <mat-hint>Categoria</mat-hint>
     </div>
     <div class="form-group sub-category-group" class="hint-on-hover">
       <label>Sub-Category</label>
       <mat-button-toggle-group formControlName="subCategory" appearance="legacy" class="hint-on-hover">
         <mat-button-toggle *ngFor="let subCategory of subCategories" [value]="subCategory">{{ subCategory }}</mat-button-toggle>
       </mat-button-toggle-group>
-      <mat-hint>Sub Categoria</mat-hint>
     </div>
     <div class="buttons-container">
       <button mat-raised-button color="primary" (click)="generateString()">Genera Stringa</button>
