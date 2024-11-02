@@ -1,0 +1,27 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Spazio tra i campi di input */
+    max-width: 400px;
+    margin: auto;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  button {
+    margin-top: 16px;
+  }
+  
+  .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+  
+  p {
+    margin-top: 16px;
+    font-weight: bold;
+  }
+  
