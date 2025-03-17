@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riconoscimento Vocale</title>
+</head>
+<body>
+    <h1>Riconoscimento Vocale</h1>
+    <button id="startRecognition">Avvia Riconoscimento</button>
+    <div id="outputText"></div>
+
+    <script>
+        if ('webkitSpeechRecognition' in window) {
+            const recognition = new webkitSpeechRecognition();
+            recognition.lang = 'it-IT'; // Imposta la lingua
+            recognition.interimResults = true; // Mostra i risultati parziali
+
+            recognition.onresult = function(event) {
+                let finalTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript;
+                    }
+                }
+                console.log('Risultato finale:', finalTranscript);
+                document.getElementById('outputText').textContent = 'Testo riconosciuto: ' + finalTranscript;
+            };
+
+            recognition.onerror = function(event) {
+                console.error('Errore di riconoscimento:', event.error);
+                document.getElementById('outputText').textContent = 'Errore nel riconoscimento vocale.';
+            };
+
+            document.getElementById('startRecognition').addEventListener('click', function() {
+                document.getElementById('outputText').textContent = 'Inizio riconoscimento...';
+                recognition.start();
+            });
+        } else {
+            console.log('API di riconoscimento vocale non supportata in questo browser.');
+            document.getElementById('outputText').textContent = 'Il riconoscimento vocale non è supportato dal tuo browser.';
+        }
+    </script>
+</body>
+</html>
