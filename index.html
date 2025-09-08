@@ -2,19 +2,39 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Generatore Stringa Orario</title>
+  <title>TIMESTRING GENERATOR</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png">
   <style>
     body {
       background: linear-gradient(135deg, #64b5f6, #8e24aa 100%);
-      min-height: 100vh; 
-      display: flex; 
-      justify-content: center; 
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
       align-items: center;
       font-family: 'Roboto', sans-serif;
       margin: 0;
     }
+    .banner-logo {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255,255,255,0.85); /* bianco trasparente */
+      border-radius: 18px 18px 0 0;
+      padding: 1.1em 0 0.7em 0;
+      margin-bottom: 0.5em;
+    }
+
+    .banner-logo img {
+      width: 85%;
+      max-width: 420px;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
     .card {
       background: #fff;
       border-radius: 22px;
@@ -24,16 +44,11 @@
       width: 100%;
       text-align: center;
       animation: floatIn 1s cubic-bezier(0.42,0,0.58,1);
+      margin-top: 48px;
     }
     @keyframes floatIn {
       from { transform: translateY(80px); opacity: 0; }
       to   { transform: translateY(0);   opacity: 1; }
-    }
-    h2 {
-      color: #7c43bd;
-      font-weight: 700;
-      margin-bottom: 1.1em;
-      letter-spacing: 1px;
     }
     label {
       display: block;
@@ -110,51 +125,53 @@
 </head>
 <body>
   <div class="card">
-    <h2>ZeusXstringApp</h2>
-
-    <label for="duration">Durata (ore):</label>
-    <input type="number" id="duration" min="0" step="0.5" required value="8" autofocus>
-
-    <label for="start">Ora di inizio:</label>
-    <input type="time" id="start" required value="09:00">
-
-    <label for="end">Ora di fine:</label>
-    <input type="time" id="end" required value="18:00">
-
-    <label for="category">Categoria:</label>
-    <select id="category">
-      <option value="AVA">AVA</option>
-      <option value="PK">PK</option>
-      <option value="PAR">PAR</option>
-      <option value="PP">PP</option>
-    </select>
-
-    <label for="subcategory">Sotto-categoria:</label>
-    <select id="subcategory">
-      <option value="FERIE">FERIE</option>
-      <option value="ROL">ROL</option>
-      <option value="EX-FEST">EX-FEST</option>
-      <option value="PAR">PAR</option>
-    </select>
-
-    <button onclick="generateString()">Genera Stringa</button>
-    <div id="output"></div>
-    <button onclick="copyString()">Copia negli appunti</button>
+    <div class="banner-logo">
+      <img src="logo-top.png" alt="TIMESTRING GENERATOR" />
+    </div>
+    <form onsubmit="event.preventDefault(); generateString();">
+      <label for="duration">Durata (ore):</label>
+      <input type="number" id="duration" min="0" step="0.5" required value="8" autofocus>
+  
+      <label for="start">Ora di inizio:</label>
+      <input type="time" id="start" required value="09:00">
+  
+      <label for="end">Ora di fine:</label>
+      <input type="time" id="end" required value="18:00">
+  
+      <label for="category">Categoria:</label>
+      <select id="category">
+        <option value="AVA">AVA</option>
+        <option value="PK">PK</option>
+        <option value="PAR">PAR</option>
+        <option value="PP">PP</option>
+      </select>
+  
+      <label for="subcategory">Sotto-categoria:</label>
+      <select id="subcategory">
+        <option value="FERIE">FERIE</option>
+        <option value="ROL">ROL</option>
+        <option value="EX-FEST">EX-FEST</option>
+        <option value="PAR">PAR</option>
+      </select>
+  
+      <button type="button" onclick="generateString()">Genera Stringa</button>
+      <div id="output"></div>
+      <button type="button" onclick="copyString()">Copia negli appunti</button>
+    </form>
   </div>
-
+  <div class="version-label">versione 2.0.0</div>
   <script>
     window.onload = function() {
       let durationInput = document.getElementById("duration");
       durationInput.focus();
       durationInput.select();
-    };    
+    };
     function generateString() {
       let duration = document.getElementById("duration").value;
       let start = document.getElementById("start").value;
       let end = document.getElementById("end").value;
       let category = document.getElementById("category").value;
       let subcategory = document.getElementById("subcategory").value;
-
       if(!duration || !start || !end) {
         document.getElementById("output").innerText = "Compila tutti i campi!";
         return;
@@ -162,7 +179,6 @@
       let result = `${duration} ore - ${category} - ${subcategory} - ${start}-${end}`;
       document.getElementById("output").innerText = result;
     }
-
     function copyString() {
       let text = document.getElementById("output").innerText;
       if(text && text !== "Compila tutti i campi!") {
@@ -173,6 +189,5 @@
       }
     }
   </script>
-<div class="version-label">versione 2.0.0</div>
 </body>
 </html>
