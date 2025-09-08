@@ -139,33 +139,46 @@
       <input type="time" id="end" required value="18:00">
   
       <label for="category">Categoria:</label>
-      <select id="category">
+      <select id="category" onchange="toggleSubcategory()">
         <option value="AVA">AVA</option>
         <option value="PK">PK</option>
         <option value="PAR">PAR</option>
         <option value="PP">PP</option>
       </select>
   
-      <label for="subcategory">Sotto-categoria:</label>
-      <select id="subcategory">
-        <option value="FERIE">FERIE</option>
-        <option value="ROL">ROL</option>
-        <option value="EX-FEST">EX-FEST</option>
-        <option value="PAR">PAR</option>
-      </select>
+      <div id="subcategory-group">
+        <label for="subcategory">Sotto-categoria:</label>
+        <select id="subcategory">
+          <option value="FERIE">FERIE</option>
+          <option value="ROL">ROL</option>
+          <option value="EX-FEST">EX-FEST</option>
+          <option value="PAR">PAR</option>
+        </select>
+      </div>
   
       <button type="button" onclick="generateString()">Genera Stringa</button>
       <div id="output"></div>
-      <button type="button" onclick="copyString()">Copia negli appunti</button>
+      <button type="button" onclick="copyString()">Copia negli appunti</button>    
     </form>
   </div>
-  <div class="version-label">versione 2.0.1</div>
+  <div class="version-label">versione 2.0.2</div>
   <script>
     window.onload = function() {
       let durationInput = document.getElementById("duration");
       durationInput.focus();
       durationInput.select();
+      toggleSubcategory(); // Stato iniziale corretto
     };
+    function toggleSubcategory() {
+      let category = document.getElementById("category").value;
+      let subcategoryGroup = document.getElementById("subcategory-group");
+      if(category === "AVA") {
+        subcategoryGroup.style.display = "block";
+      } else {
+        subcategoryGroup.style.display = "none";
+        document.getElementById("subcategory").value = ""; // Resetta il valore
+      }
+    }
     function generateString() {
       let duration = document.getElementById("duration").value;
       let start = document.getElementById("start").value;
@@ -176,7 +189,14 @@
         document.getElementById("output").innerText = "Compila tutti i campi!";
         return;
       }
-      let result = `${duration} ore - ${category} - ${subcategory} - ${start}-${end}`;
+
+      if (category === "AVA") {
+        let subcategory = document.getElementById("subcategory").value;
+        result = `${duration} ore - ${category} - ${subcategory} - ${start}-${end}`;
+      } else {
+        result = `${duration} ore - ${category} - ${start}-${end}`;
+      }
+
       document.getElementById("output").innerText = result;
     }
     function copyString() {
