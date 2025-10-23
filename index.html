@@ -169,15 +169,83 @@
   <div id="output"></div>
     </form>
   </div>
-  <div class="version-label">versione 2.0.4</div>
+  <div class="version-label">versione 2.0.7</div>
   <script>
     window.onload = function() {
       let durationInput = document.getElementById("duration");
       durationInput.focus();
       durationInput.select();
-      toggleSubcategory(); // Stato iniziale corretto
+      // Ripristina valori salvati (cookie o localStorage)
+      restoreSavedFields();
+      // Toggle iniziale senza salvare (altrimenti sovrascrive i valori restaurati)
+      toggleSubcategory(false);
+
+      // Aggiungi listeners per salvare i campi appena vengono modificati
+      try {
+        const durationEl = document.getElementById('duration');
+        const startEl = document.getElementById('start');
+        const endEl = document.getElementById('end');
+        const categoryEl = document.getElementById('category');
+        const subcatEl = document.getElementById('subcategory');
+
+        durationEl.addEventListener('input', e => saveField('duration', e.target.value));
+        startEl.addEventListener('change', e => saveField('start', e.target.value));
+        endEl.addEventListener('change', e => saveField('end', e.target.value));
+        subcatEl.addEventListener('change', e => saveField('subcategory', e.target.value));
+        categoryEl.addEventListener('change', e => { toggleSubcategory(true); });
+      } catch(e) {
+        // elementi non trovati: non fare nulla
+      }
     };
-    function toggleSubcategory() {
+    
+    // Persistence helpers: prefer localStorage (reliable), fall back to cookies
+    function setLocal(name, value) {
+      try { localStorage.setItem(name, value); return true; } catch(e) { return false; }
+    }
+    function getLocal(name) {
+      try { return localStorage.getItem(name); } catch(e) { return null; }
+    }
+    function removeLocal(name) {
+      try { localStorage.removeItem(name); } catch(e) {}
+    }
+
+    function setCookie(name, value, days) {
+      try {
+        const expires = new Date(Date.now() + (days||365)*24*60*60*1000).toUTCString();
+        document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+        return true;
+      } catch(e) { return false; }
+    }
+    function getCookie(name) {
+      try {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        if(match) return decodeURIComponent(match[2]);
+      } catch(e) {}
+      return null;
+    }
+
+    function saveField(name, value) {
+      const key = 'tz_' + name;
+      // try localStorage first
+      if(!setLocal(key, value)) {
+        // fallback to cookie
+        setCookie(key, value, 365);
+      }
+    }
+
+    function restoreSavedFields() {
+      const fields = ['duration','start','end','category','subcategory'];
+      fields.forEach(f => {
+        const key = 'tz_' + f;
+        let v = getLocal(key);
+        if(v === null) v = getCookie(key);
+        if(v !== null && v !== 'null' && v !== '') {
+          const el = document.getElementById(f);
+          if(el) el.value = v;
+        }
+      });
+    }
+    function toggleSubcategory(save = true) {
       let category = document.getElementById("category").value;
       let subcategoryGroup = document.getElementById("subcategory-group");
       if(category === "AVA") {
@@ -185,7 +253,11 @@
       } else {
         subcategoryGroup.style.display = "none";
         document.getElementById("subcategory").value = ""; // Resetta il valore
+        // salva lo stato della subcategory anche quando nascosta, solo se è una modifica utente
+        if(save) saveField('subcategory', '');
       }
+      // salva la categoria quando cambia (solo se richiesta)
+      if(save) saveField('category', category);
     }
     function generateString() {
       let duration = document.getElementById("duration").value;
@@ -206,6 +278,12 @@
       }
 
       document.getElementById("output").innerText = result;
+      // salva i campi correnti
+      saveField('duration', duration);
+      saveField('start', start);
+      saveField('end', end);
+      saveField('category', category);
+      if(category === 'AVA') saveField('subcategory', subcategory);
     }
     function copyString() {
       let text = document.getElementById("output").innerText;
