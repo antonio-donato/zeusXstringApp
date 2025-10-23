@@ -165,12 +165,11 @@
         </select>
       </div>
   
-      <button type="button" onclick="generateString()">Genera Stringa</button>
-      <div id="output"></div>
-      <button type="button" onclick="copyString()">Copia negli appunti</button>    
+  <button type="button" id="generate-copy-btn" onclick="generateAndCopy()">Genera Stringa e Copia negli appunti</button>
+  <div id="output"></div>
     </form>
   </div>
-  <div class="version-label">versione 2.0.3</div>
+  <div class="version-label">versione 2.0.4</div>
   <script>
     window.onload = function() {
       let durationInput = document.getElementById("duration");
@@ -211,11 +210,26 @@
     function copyString() {
       let text = document.getElementById("output").innerText;
       if(text && text !== "Compila tutti i campi!") {
-        navigator.clipboard.writeText(text);
-        let btn = document.activeElement;
-        btn.innerText = "✔ Copiato!";
-        setTimeout(()=>{ btn.innerText = "Copia negli appunti"; }, 1400);
+        return navigator.clipboard.writeText(text).then(() => true).catch(() => false);
       }
+      return Promise.resolve(false);
+    }
+
+    function generateAndCopy() {
+      // Genera la stringa
+      generateString();
+
+      // Copia e mostra feedback sul bottone
+      const btn = document.getElementById('generate-copy-btn');
+      const originalText = btn.innerText;
+      copyString().then(success => {
+        if(success) {
+          btn.innerText = "✔ Copiato!";
+        } else {
+          btn.innerText = "Errore copia";
+        }
+        setTimeout(() => { btn.innerText = originalText; }, 1400);
+      });
     }
   </script>
 </body>
