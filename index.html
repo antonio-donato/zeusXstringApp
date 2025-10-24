@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <title>TIMESTRING GENERATOR</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link href  </div>
-  <div class="version-label">versione 2.0.9</div>
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="favicon.png">
   <!-- Google tag (gtag.js) -->
@@ -158,8 +156,7 @@
     .changelog-tab {
       position: fixed;
       left: 0;
-      top: 50%;
-      transform: translateY(-50%);
+      top: 80px;
       background: rgba(124,67,189,0.85);
       color: white;
       padding: 12px 8px;
@@ -177,6 +174,11 @@
     .changelog-tab:hover {
       background: rgba(124,67,189,0.95);
       padding-left: 12px;
+    }
+    @media (max-width: 768px) {
+      .changelog-tab {
+        top: 20px; /* Ancora più in alto su mobile */
+      }
     }
     
     .changelog-panel {
@@ -270,7 +272,7 @@
   <div id="output"></div>
     </form>
   </div>
-  <div class="version-label">versione 2.0.9</div>
+  <div class="version-label">versione 2.0.10</div>
   <button onclick="resetSavedFields()" class="reset-btn" title="Ripristina i valori predefiniti">Ripristina valori predefiniti</button>
   
   <div class="changelog-tab" onclick="toggleChangelog()">Changelog</div>
@@ -279,7 +281,7 @@
       <h2>Cronologia modifiche</h2>
       
       <div class="changelog-version">
-        <h3>Versione 2.0.9 <span class="version-date">24 Ottobre 2025</span></h3>
+        <h3>Versione 2.0.10 <span class="version-date">24 Ottobre 2025</span></h3>
         <ul>
           <li>Risolto problema di duplicazione del pulsante reset</li>
           <li>Uniformata etichetta del pulsante reset</li>
