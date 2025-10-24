@@ -132,23 +132,26 @@
     }
     .reset-btn {
       position: fixed;
-      right: 16px;
-      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 48px; /* Spostato più in alto per non coprire la versione */
       font-size: 0.85em;
       color: rgba(255,255,255,0.85);
       background: rgba(124,67,189,0.65);
-      padding: 4px 12px;
+      padding: 8px 12px;
       border-radius: 10px;
       border: none;
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(124,67,189,0.12);
       transition: all 0.2s ease;
       z-index: 100;
+      width: 370px; /* Stessa larghezza della card */
+      max-width: calc(100% - 32px); /* Responsive su schermi piccoli */
     }
     .reset-btn:hover {
       background: rgba(124,67,189,0.85);
       color: white;
-      transform: translateY(-1px);
+      transform: translateX(-50%) translateY(-1px); /* Mantiene il centramento durante l'hover */
       box-shadow: 0 3px 12px rgba(124,67,189,0.2);
     }
 
@@ -272,7 +275,7 @@
   <div id="output"></div>
     </form>
   </div>
-  <div class="version-label">versione 2.0.10</div>
+  <div class="version-label">versione 2.0.11</div>
   <button onclick="resetSavedFields()" class="reset-btn" title="Ripristina i valori predefiniti">Ripristina valori predefiniti</button>
   
   <div class="changelog-tab" onclick="toggleChangelog()">Changelog</div>
@@ -280,6 +283,15 @@
     <div class="changelog-content">
       <h2>Cronologia modifiche</h2>
       
+      <div class="changelog-version">
+        <h3>Versione 2.0.11 <span class="version-date">24 Ottobre 2025</span></h3>
+        <ul>
+          <li>Pulsante "Ripristina valori predefiniti" ora ha la stessa larghezza del bottone principale</li>
+          <li>Pulsante reset centrato e responsive, non copre più la versione</li>
+          <li>Ulteriori miglioramenti di layout e usabilità</li>
+        </ul>
+      </div>
+
       <div class="changelog-version">
         <h3>Versione 2.0.10 <span class="version-date">24 Ottobre 2025</span></h3>
         <ul>
