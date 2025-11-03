@@ -132,26 +132,28 @@
     }
     .reset-btn {
       position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 48px; /* Spostato più in alto per non coprire la versione */
+      right: 16px; /* Posizionato in basso a destra */
+      left: auto;
+      bottom: 16px;
       font-size: 0.85em;
-      color: rgba(255,255,255,0.85);
-      background: rgba(124,67,189,0.65);
-      padding: 8px 12px;
+      color: rgba(255,255,255,0.95);
+      background: rgba(124,67,189,0.75);
+      padding: 8px 14px;
       border-radius: 10px;
       border: none;
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(124,67,189,0.12);
       transition: all 0.2s ease;
       z-index: 100;
-      width: 370px; /* Stessa larghezza della card */
+      width: auto; /* larghezza adattiva a destra */
       max-width: calc(100% - 32px); /* Responsive su schermi piccoli */
+      min-width: 140px;
+      text-align: center;
     }
     .reset-btn:hover {
-      background: rgba(124,67,189,0.85);
+      background: rgba(124,67,189,0.95);
       color: white;
-      transform: translateX(-50%) translateY(-1px); /* Mantiene il centramento durante l'hover */
+      transform: translateY(-1px); /* leggera sollevamento all'hover */
       box-shadow: 0 3px 12px rgba(124,67,189,0.2);
     }
 
@@ -181,6 +183,18 @@
     @media (max-width: 768px) {
       .changelog-tab {
         top: 20px; /* Ancora più in alto su mobile */
+      }
+    }
+    /* Evita che i fixed elements (version-label, reset-btn) sovrappongano il contenuto
+       su viewport molto strette: aggiungiamo padding-bottom al body per lasciare spazio
+       ai controlli fissi e spostiamo leggermente gli elementi se necessario. */
+    @media (max-width: 480px) {
+      body {
+        padding-bottom: 120px; /* lascia spazio ai controlli fissi nella parte bassa */
+      }
+      .version-label,
+      .reset-btn {
+        bottom: 20px; /* aumenta lo spazio dal fondo per evitare sovrapposizioni */
       }
     }
     
@@ -275,7 +289,7 @@
   <div id="output"></div>
     </form>
   </div>
-  <div class="version-label">versione 2.0.11</div>
+  <div class="version-label">versione 2.0.13</div>
   <button onclick="resetSavedFields()" class="reset-btn" title="Ripristina i valori predefiniti">Ripristina valori predefiniti</button>
   
   <div class="changelog-tab" onclick="toggleChangelog()">Changelog</div>
@@ -283,6 +297,22 @@
     <div class="changelog-content">
       <h2>Cronologia modifiche</h2>
       
+      <div class="changelog-version">
+        <h3>Versione 2.0.13 <span class="version-date">03 Novembre 2025</span></h3>
+        <ul>
+          <li>Abbassati ulteriormente la label versione e il pulsante "Ripristina valori predefiniti" per evitare sovrapposizioni sui dispositivi mobile a larghezza ridotta</li>
+          <li>Aggiornato il padding-bottom responsive per garantire spazio al campo di output e migliorare l'accessibilità</li>
+        </ul>
+      </div>
+
+      <div class="changelog-version">
+        <h3>Versione 2.0.12 <span class="version-date">03 Novembre 2025</span></h3>
+        <ul>
+          <li>Spostato il pulsante "Ripristina valori predefiniti" in basso a destra per evitare sovrapposizioni e migliorare l'accessibilità</li>
+          <li>Stile aggiornato: larghezza adattiva, margini e comportamento responsive migliorati</li>
+        </ul>
+      </div>
+
       <div class="changelog-version">
         <h3>Versione 2.0.11 <span class="version-date">24 Ottobre 2025</span></h3>
         <ul>
