@@ -17,7 +17,7 @@
   </script>
   <style>
     body {
-      background: linear-gradient(135deg, #64b5f6, #8e24aa 100%);
+      background: linear-gradient(135deg, #c62828, #8e0000 100%); /* tema natalizio rosso */
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -45,6 +45,8 @@
     }
 
     .card {
+      position: relative; /* necessario per posizionare il cappello */
+      z-index: 50;
       background: #fff;
       border-radius: 22px;
       box-shadow: 0 6px 28px rgba(80, 36, 101, 0.19);
@@ -62,7 +64,7 @@
     label {
       display: block;
       margin-top: 1.1em;
-      color: #8e24aa;
+      color: #b71c1c; /* rosso natalizio */
       font-weight: 500;
       text-align: left;
     }
@@ -78,7 +80,7 @@
       font-family: 'Roboto', sans-serif;
     }
     input:focus, select:focus {
-      border: 1.5px solid #7c43bd;
+      border: 1.5px solid #b71c1c;
       outline: none;
     }
     button {
@@ -87,19 +89,19 @@
       padding: 0.7em;
       border-radius: 8px;
       border: none;
-      background: linear-gradient(90deg, #7c43bd 60%, #42a5f5);
+      background: linear-gradient(90deg, #b71c1c 60%, #e53935);
       color: #fff;
       font-size: 1.08em;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(80, 36, 101, 0.10);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
       letter-spacing: 0.05em;
       transition: box-shadow 0.18s, transform 0.18s, background 0.2s;
     }
     button:hover {
-      background: linear-gradient(90deg,#42a5f5,#7c43bd 85%);
-      box-shadow: 0 4px 16px rgba(80, 36, 101, 0.14);
-      transform: translateY(-2px) scale(1.03);
+      background: linear-gradient(90deg,#e53935,#b71c1c 85%);
+      box-shadow: 0 4px 18px rgba(0,0,0,0.16);
+      transform: translateY(-2px) scale(1.02);
     }
     #output {
       margin-top: 1.2em;
@@ -121,10 +123,10 @@
       bottom: 16px;
       font-size: 0.97em;
       color: #fff;
-      background: rgba(124,67,189,0.75);
+      background: rgba(183,28,28,0.95);
       padding: 5px 16px;
       border-radius: 13px;
-      box-shadow: 0 2px 12px rgba(124,67,189,0.14);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.16);
       z-index: 100;
       font-weight: 500;
       letter-spacing: 0.1em;
@@ -136,8 +138,8 @@
       left: auto;
       bottom: 16px;
       font-size: 0.85em;
-      color: rgba(255,255,255,0.95);
-      background: rgba(124,67,189,0.75);
+      color: rgba(255,255,255,0.98);
+      background: rgba(183,28,28,0.95);
       padding: 8px 14px;
       border-radius: 10px;
       border: none;
@@ -197,6 +199,71 @@
         bottom: 20px; /* aumenta lo spazio dal fondo per evitare sovrapposizioni */
       }
     }
+
+    /* Cappello di Babbo Natale (puro CSS, piccolo, angolo in alto a sinistra del frame bianco) */
+    .santa-hat {
+      position: absolute;
+      top: -8px;
+      left: 12px;
+      width: 56px;
+      height: 36px;
+      transform: rotate(-12deg);
+      z-index: 60;
+      pointer-events: none;
+    }
+    .santa-hat::before {
+      /* parte rossa del cappello */
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 100%;
+      height: 22px;
+      background: #c62828;
+      border-radius: 12px 12px 8px 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+    }
+    .santa-hat::after {
+      /* bordo bianco e pon-pon */
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 22px;
+      width: 40px;
+      height: 12px;
+      background: #fff;
+      border-radius: 8px;
+    }
+    .santa-hat .pom { /* cerchio bianco */
+      position: absolute;
+      right: -8px;
+      top: -2px;
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    /* Snowflakes styles */
+    .snowflake {
+      position: fixed;
+      top: -10vh;
+      color: rgba(255,255,255,0.95);
+      pointer-events: none;
+      user-select: none;
+      z-index: 5;
+      will-change: transform;
+      text-shadow: 0 0 6px rgba(255,255,255,0.25);
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.06));
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.9; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.9; }
+    }
     
     .changelog-panel {
       position: fixed;
@@ -254,6 +321,7 @@
 </head>
 <body>
   <div class="card">
+    <div class="santa-hat" aria-hidden="true"><span class="pom"></span></div>
     <div class="banner-logo">
       <img src="logo-top.png" alt="TIMESTRING GENERATOR" />
     </div>
@@ -289,7 +357,7 @@
   <div id="output"></div>
     </form>
   </div>
-  <div class="version-label">versione 2.0.13</div>
+  <div class="version-label">versione 2.0.14</div>
   <button onclick="resetSavedFields()" class="reset-btn" title="Ripristina i valori predefiniti">Ripristina valori predefiniti</button>
   
   <div class="changelog-tab" onclick="toggleChangelog()">Changelog</div>
@@ -298,10 +366,11 @@
       <h2>Cronologia modifiche</h2>
       
       <div class="changelog-version">
-        <h3>Versione 2.0.13 <span class="version-date">03 Novembre 2025</span></h3>
+        <h3>Versione 2.0.14 <span class="version-date">20 Novembre 2025</span></h3>
         <ul>
-          <li>Abbassati ulteriormente la label versione e il pulsante "Ripristina valori predefiniti" per evitare sovrapposizioni sui dispositivi mobile a larghezza ridotta</li>
-          <li>Aggiornato il padding-bottom responsive per garantire spazio al campo di output e migliorare l'accessibilità</li>
+          <li>Aggiunta decorazione natalizia: neve animata sullo sfondo e cappello di Babbo Natale in alto a sinistra del frame bianco</li>
+          <li>Ritoccati i colori dell'interfaccia verso tonalità rosse (tema natalizio) e piccoli aggiustamenti di contrasto</li>
+          <li>Migliorato il comportamento mobile: padding-bottom e posizionamento dei controlli fissi per evitare sovrapposizioni</li>
         </ul>
       </div>
 
@@ -392,6 +461,8 @@
       } catch(e) {
         // elementi non trovati: non fare nulla
       }
+        // crea neve decorativa
+        try { createSnowflakes(28); } catch(e) {}
     };
     
     // Persistence helpers: prefer localStorage (reliable), fall back to cookies
@@ -480,6 +551,26 @@
       }
       // salva la categoria quando cambia (solo se richiesta)
       if(save) saveField('category', category);
+    }
+
+    // Genera semplici snowflakes come elementi <span> distribuiti casualmente
+    function createSnowflakes(count) {
+      const body = document.body;
+      for(let i=0;i<count;i++){
+        const s = document.createElement('span');
+        s.className = 'snowflake';
+        s.innerText = '❅';
+        const size = (Math.random()*10)+8; // 8-18px
+        s.style.fontSize = size + 'px';
+        s.style.left = (Math.random()*100) + '%';
+        const duration = 8 + Math.random()*12; // 8-20s
+        s.style.animationDuration = duration + 's';
+        s.style.animationDelay = (Math.random()*-duration) + 's';
+        s.style.opacity = 0.7 + Math.random()*0.3;
+        // slight horizontal sway using CSS variable
+        s.style.setProperty('--sx', (Math.random()*60-30) + 'px');
+        body.appendChild(s);
+      }
     }
     function generateString() {
       let duration = document.getElementById("duration").value;
