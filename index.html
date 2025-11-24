@@ -260,6 +260,41 @@
       animation-timing-function: linear;
       animation-iteration-count: infinite;
     }
+    /* Grinch overlay styles */
+    #grinchOverlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6, 40, 12, 0.92);
+      z-index: 2000;
+    }
+    .grinch-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+    }
+    .grinch-img {
+      max-width: 92vw;
+      max-height: 86vh;
+      width: auto;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      object-fit: contain;
+    }
+    .grinch-close {
+      color: rgba(255,255,255,0.9);
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+    }
     @keyframes fall {
       0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.9; }
       100% { transform: translateY(110vh) rotate(360deg); opacity: 0.9; }
@@ -357,7 +392,15 @@
   <div id="output"></div>
     </form>
   </div>
-  <div class="version-label">versione 2.0.14</div>
+  <div class="version-label">versione 2.0.15</div>
+  <!-- Grinch overlay (hidden) -->
+  <div id="grinchOverlay" role="dialog" aria-hidden="true" tabindex="-1">
+    <div class="grinch-content" role="document" aria-label="Grinch sorpresa">
+      <!-- User-supplied Grinch image -->
+      <img src="grinch.png" alt="Grinch sorpresa" class="grinch-img" />
+      <div class="grinch-close">Clicca o premi Esc per chiudere</div>
+    </div>
+  </div>
   <button onclick="resetSavedFields()" class="reset-btn" title="Ripristina i valori predefiniti">Ripristina valori predefiniti</button>
   
   <div class="changelog-tab" onclick="toggleChangelog()">Changelog</div>
@@ -365,6 +408,13 @@
     <div class="changelog-content">
       <h2>Cronologia modifiche</h2>
       
+      <div class="changelog-version">
+        <h3>Versione 2.0.15 <span class="version-date">24 Novembre 2025</span></h3>
+        <ul>
+          <li>Correzione bug</li>
+        </ul>
+      </div>
+
       <div class="changelog-version">
         <h3>Versione 2.0.14 <span class="version-date">20 Novembre 2025</span></h3>
         <ul>
@@ -627,6 +677,44 @@
       const panel = document.getElementById('changelogPanel');
       panel.classList.toggle('open');
     }
+
+    // Easter-egg: dopo 8 click (senza limite di tempo) sul cappello mostra il Grinch a tutto schermo
+    (function(){
+      let clickCount = 0;
+      const REQUIRED = 8;
+      function showGrinch(){
+        const ov = document.getElementById('grinchOverlay');
+        if(!ov) return;
+        ov.style.display = 'flex';
+        ov.setAttribute('aria-hidden','false');
+        try { ov.focus(); } catch(e) {}
+      }
+      function hideGrinch(){
+        const ov = document.getElementById('grinchOverlay');
+        if(!ov) return;
+        ov.style.display = 'none';
+        ov.setAttribute('aria-hidden','true');
+      }
+      document.addEventListener('DOMContentLoaded', ()=>{
+        const hat = document.querySelector('.santa-hat');
+        const ov = document.getElementById('grinchOverlay');
+        if(hat){
+          // allow clicks even if pointer-events were none on hat; temporarily enable
+          hat.style.pointerEvents = 'auto';
+          hat.addEventListener('click', ()=>{
+            clickCount += 1;
+            if(clickCount >= REQUIRED){
+              clickCount = 0;
+              showGrinch();
+            }
+          });
+        }
+        if(ov){
+          ov.addEventListener('click', hideGrinch);
+          document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') hideGrinch(); });
+        }
+      });
+    })();
   </script>
 </body>
 </html>
