@@ -163,7 +163,8 @@
     .changelog-tab {
       position: fixed;
       left: 0;
-      top: 80px;
+      top: 50%;
+      transform: translateY(-50%); /* centrata verticalmente */
       background: rgba(124,67,189,0.85);
       color: white;
       padding: 12px 8px;
@@ -185,6 +186,7 @@
     @media (max-width: 768px) {
       .changelog-tab {
         top: 20px; /* Ancora più in alto su mobile */
+        transform: none; /* rimuove il translate per mobile */
       }
     }
     /* Evita che i fixed elements (version-label, reset-btn) sovrappongano il contenuto
@@ -392,7 +394,7 @@
   <div id="output"></div>
     </form>
   </div>
-  <div class="version-label">versione 2.0.15</div>
+  <div class="version-label">versione 2.0.16</div>
   <!-- Grinch overlay (hidden) -->
   <div id="grinchOverlay" role="dialog" aria-hidden="true" tabindex="-1">
     <div class="grinch-content" role="document" aria-label="Grinch sorpresa">
@@ -408,6 +410,13 @@
     <div class="changelog-content">
       <h2>Cronologia modifiche</h2>
       
+      <div class="changelog-version">
+        <h3>Versione 2.0.16 <span class="version-date">24 Novembre 2025</span></h3>
+        <ul>
+          <li>Abbassata la tab del changelog a metà schermo per migliorare l'accessibilità</li>
+        </ul>
+      </div>
+
       <div class="changelog-version">
         <h3>Versione 2.0.15 <span class="version-date">24 Novembre 2025</span></h3>
         <ul>
