@@ -17,7 +17,7 @@
   </script>
   <style>
     body {
-      background: linear-gradient(135deg, #c62828, #8e0000 100%); /* tema natalizio rosso */
+      background: linear-gradient(135deg, #2e7d32, #1b5e20 100%); /* tema verde */
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -64,7 +64,7 @@
     label {
       display: block;
       margin-top: 1.1em;
-      color: #b71c1c; /* rosso natalizio */
+      color: #1b5e20; /* verde principale */
       font-weight: 500;
       text-align: left;
     }
@@ -80,7 +80,7 @@
       font-family: 'Roboto', sans-serif;
     }
     input:focus, select:focus {
-      border: 1.5px solid #b71c1c;
+      border: 1.5px solid #2e7d32;
       outline: none;
     }
     button {
@@ -89,7 +89,7 @@
       padding: 0.7em;
       border-radius: 8px;
       border: none;
-      background: linear-gradient(90deg, #b71c1c 60%, #e53935);
+      background: linear-gradient(90deg, #2e7d32 60%, #43a047);
       color: #fff;
       font-size: 1.08em;
       font-weight: 600;
@@ -99,7 +99,7 @@
       transition: box-shadow 0.18s, transform 0.18s, background 0.2s;
     }
     button:hover {
-      background: linear-gradient(90deg,#e53935,#b71c1c 85%);
+      background: linear-gradient(90deg,#43a047,#2e7d32 85%);
       box-shadow: 0 4px 18px rgba(0,0,0,0.16);
       transform: translateY(-2px) scale(1.02);
     }
@@ -123,7 +123,7 @@
       bottom: 16px;
       font-size: 0.97em;
       color: #fff;
-      background: rgba(183,28,28,0.95);
+      background: rgba(46,125,50,0.95);
       padding: 5px 16px;
       border-radius: 13px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.16);
@@ -139,7 +139,7 @@
       bottom: 16px;
       font-size: 0.85em;
       color: rgba(255,255,255,0.98);
-      background: rgba(183,28,28,0.95);
+      background: rgba(46,125,50,0.95);
       padding: 8px 14px;
       border-radius: 10px;
       border: none;
@@ -153,10 +153,10 @@
       text-align: center;
     }
     .reset-btn:hover {
-      background: rgba(124,67,189,0.95);
+      background: rgba(35,97,40,0.95);
       color: white;
       transform: translateY(-1px); /* leggera sollevamento all'hover */
-      box-shadow: 0 3px 12px rgba(124,67,189,0.2);
+      box-shadow: 0 3px 12px rgba(46,125,50,0.2);
     }
 
     /* Changelog tab styles */
@@ -202,106 +202,10 @@
       }
     }
 
-    /* Cappello di Babbo Natale (puro CSS, piccolo, angolo in alto a sinistra del frame bianco) */
-    .santa-hat {
-      position: absolute;
-      top: -8px;
-      left: 12px;
-      width: 56px;
-      height: 36px;
-      transform: rotate(-12deg);
-      z-index: 60;
-      pointer-events: none;
-    }
-    .santa-hat::before {
-      /* parte rossa del cappello */
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 6px;
-      width: 100%;
-      height: 22px;
-      background: #c62828;
-      border-radius: 12px 12px 8px 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
-    }
-    .santa-hat::after {
-      /* bordo bianco e pon-pon */
-      content: '';
-      position: absolute;
-      left: -4px;
-      top: 22px;
-      width: 40px;
-      height: 12px;
-      background: #fff;
-      border-radius: 8px;
-    }
-    .santa-hat .pom { /* cerchio bianco */
-      position: absolute;
-      right: -8px;
-      top: -2px;
-      width: 14px;
-      height: 14px;
-      background: #fff;
-      border-radius: 50%;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-    }
+    /* Rimosse decorazioni natalizie (cappello, neve) */
 
-    /* Snowflakes styles */
-    .snowflake {
-      position: fixed;
-      top: -10vh;
-      color: rgba(255,255,255,0.95);
-      pointer-events: none;
-      user-select: none;
-      z-index: 5;
-      will-change: transform;
-      text-shadow: 0 0 6px rgba(255,255,255,0.25);
-      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.06));
-      animation-name: fall;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-    }
-    /* Grinch overlay styles */
-    #grinchOverlay {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(6, 40, 12, 0.92);
-      z-index: 2000;
-    }
-    .grinch-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      border-radius: 12px;
-      -webkit-backdrop-filter: blur(4px);
-      backdrop-filter: blur(4px);
-    }
-    .grinch-img {
-      max-width: 92vw;
-      max-height: 86vh;
-      width: auto;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-      object-fit: contain;
-    }
-    .grinch-close {
-      color: rgba(255,255,255,0.9);
-      font-size: 14px;
-      font-weight: 500;
-      text-align: center;
-    }
-    @keyframes fall {
-      0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.9; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.9; }
-    }
-    
+    /* Rimosse snowflakes e overlay Grinch */
+
     .changelog-panel {
       position: fixed;
       left: 0;
@@ -319,7 +223,7 @@
     .changelog-panel.open {
       transform: translateX(0);
     }
-    
+
     .changelog-content {
       padding-right: 10px;
     }
@@ -358,20 +262,19 @@
 </head>
 <body>
   <div class="card">
-    <div class="santa-hat" aria-hidden="true"><span class="pom"></span></div>
     <div class="banner-logo">
       <img src="logo-top.png" alt="TIMESTRING GENERATOR" />
     </div>
     <form onsubmit="event.preventDefault(); generateString();">
       <label for="duration">Durata (ore):</label>
       <input type="number" id="duration" min="0" step="0.5" required value="8" autofocus>
-  
+
       <label for="start">Ora di inizio:</label>
       <input type="time" id="start" required value="09:00">
-  
+
       <label for="end">Ora di fine:</label>
       <input type="time" id="end" required value="18:00">
-  
+
       <label for="category">Categoria:</label>
       <select id="category" onchange="toggleSubcategory()">
         <option value="AVA">AVA</option>
@@ -379,7 +282,7 @@
         <option value="PAR">PAR</option>
         <option value="PP">PP</option>
       </select>
-  
+
       <div id="subcategory-group">
         <label for="subcategory">Sotto-categoria:</label>
         <select id="subcategory">
@@ -389,27 +292,29 @@
           <option value="PAR">PAR</option>
         </select>
       </div>
-  
+
   <button type="button" id="generate-copy-btn" onclick="generateAndCopy()">Genera Stringa e Copia negli appunti</button>
   <div id="output"></div>
     </form>
   </div>
-  <div class="version-label">versione 2.0.16</div>
-  <!-- Grinch overlay (hidden) -->
-  <div id="grinchOverlay" role="dialog" aria-hidden="true" tabindex="-1">
-    <div class="grinch-content" role="document" aria-label="Grinch sorpresa">
-      <!-- User-supplied Grinch image -->
-      <img src="grinch.png" alt="Grinch sorpresa" class="grinch-img" />
-      <div class="grinch-close">Clicca o premi Esc per chiudere</div>
-    </div>
-  </div>
+  <div class="version-label">versione 2.0.17</div>
   <button onclick="resetSavedFields()" class="reset-btn" title="Ripristina i valori predefiniti">Ripristina valori predefiniti</button>
-  
+
   <div class="changelog-tab" onclick="toggleChangelog()">Changelog</div>
   <div class="changelog-panel" id="changelogPanel">
     <div class="changelog-content">
       <h2>Cronologia modifiche</h2>
-      
+
+      <div class="changelog-version">
+        <h3>Versione 2.0.17 <span class="version-date">7 Gennaio 2026</span></h3>
+        <ul>
+          <li>Tema aggiornato: sostituiti i rossi con una palette verde</li>
+          <li>Rimossa la neve animata dallo sfondo</li>
+          <li>Rimosso il cappello di Babbo Natale</li>
+          <li>Disabilitato lo shortcut/easter-egg per mostrare il Grinch</li>
+        </ul>
+      </div>
+
       <div class="changelog-version">
         <h3>Versione 2.0.16 <span class="version-date">24 Novembre 2025</span></h3>
         <ul>
@@ -520,10 +425,8 @@
       } catch(e) {
         // elementi non trovati: non fare nulla
       }
-        // crea neve decorativa
-        try { createSnowflakes(28); } catch(e) {}
     };
-    
+
     // Persistence helpers: prefer localStorage (reliable), fall back to cookies
     function setLocal(name, value) {
       try { localStorage.setItem(name, value); return true; } catch(e) { return false; }
@@ -571,17 +474,17 @@
         }
       });
     }
-    
+
     function resetSavedFields() {
       if(!confirm('Vuoi ripristinare i valori predefiniti?')) return;
-      
+
       // Pulisci localStorage e cookie per tutti i campi
       ['duration','start','end','category','subcategory'].forEach(f => {
         const key = 'tz_' + f;
         removeLocal(key);
         setCookie(key, '', -1); // expires in past = delete
       });
-      
+
       // Reimposta i valori predefiniti
       document.getElementById('duration').value = '8';
       document.getElementById('start').value = '09:00';
@@ -589,7 +492,7 @@
       document.getElementById('category').value = 'AVA';
       document.getElementById('subcategory').value = 'FERIE';
       toggleSubcategory(true);
-      
+
       // Feedback visivo
       const btn = document.querySelector('.reset-btn');
       const originalText = btn.innerText;
@@ -612,25 +515,7 @@
       if(save) saveField('category', category);
     }
 
-    // Genera semplici snowflakes come elementi <span> distribuiti casualmente
-    function createSnowflakes(count) {
-      const body = document.body;
-      for(let i=0;i<count;i++){
-        const s = document.createElement('span');
-        s.className = 'snowflake';
-        s.innerText = '❅';
-        const size = (Math.random()*10)+8; // 8-18px
-        s.style.fontSize = size + 'px';
-        s.style.left = (Math.random()*100) + '%';
-        const duration = 8 + Math.random()*12; // 8-20s
-        s.style.animationDuration = duration + 's';
-        s.style.animationDelay = (Math.random()*-duration) + 's';
-        s.style.opacity = 0.7 + Math.random()*0.3;
-        // slight horizontal sway using CSS variable
-        s.style.setProperty('--sx', (Math.random()*60-30) + 'px');
-        body.appendChild(s);
-      }
-    }
+    // Effetti natalizi rimossi nella 2.0.17
     function generateString() {
       let duration = document.getElementById("duration").value;
       let start = document.getElementById("start").value;
@@ -687,43 +572,7 @@
       panel.classList.toggle('open');
     }
 
-    // Easter-egg: dopo 8 click (senza limite di tempo) sul cappello mostra il Grinch a tutto schermo
-    (function(){
-      let clickCount = 0;
-      const REQUIRED = 8;
-      function showGrinch(){
-        const ov = document.getElementById('grinchOverlay');
-        if(!ov) return;
-        ov.style.display = 'flex';
-        ov.setAttribute('aria-hidden','false');
-        try { ov.focus(); } catch(e) {}
-      }
-      function hideGrinch(){
-        const ov = document.getElementById('grinchOverlay');
-        if(!ov) return;
-        ov.style.display = 'none';
-        ov.setAttribute('aria-hidden','true');
-      }
-      document.addEventListener('DOMContentLoaded', ()=>{
-        const hat = document.querySelector('.santa-hat');
-        const ov = document.getElementById('grinchOverlay');
-        if(hat){
-          // allow clicks even if pointer-events were none on hat; temporarily enable
-          hat.style.pointerEvents = 'auto';
-          hat.addEventListener('click', ()=>{
-            clickCount += 1;
-            if(clickCount >= REQUIRED){
-              clickCount = 0;
-              showGrinch();
-            }
-          });
-        }
-        if(ov){
-          ov.addEventListener('click', hideGrinch);
-          document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') hideGrinch(); });
-        }
-      });
-    })();
+    // Easter-egg Grinch rimosso nella 2.0.17
   </script>
 </body>
 </html>
