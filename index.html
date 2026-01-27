@@ -321,9 +321,6 @@
 
   <div class="container">
     <div class="glass-card">
-      <div class="logo-container">
-        <img src="logo-top.png" alt="Logo">
-      </div>
       <h1>TIMESTRING GENERATOR</h1>
 
       <!-- HTMX triggers an update on any input change -->
@@ -378,13 +375,20 @@
     <div class="footer-controls">
       <a href="javascript:void(0)" class="glass-badge" onclick="toggleChangelog()">Changelog</a>
       <a href="javascript:void(0)" class="glass-badge" onclick="resetDefaults()">Reset</a>
-      <div class="glass-badge" style="cursor: default;">v3.0.1</div>
+      <div class="glass-badge" style="cursor: default;">v3.0.2</div>
     </div>
   </div>
 
   <div id="changelog-panel">
     <button class="close-changelog" onclick="toggleChangelog()">&times;</button>
     <h2 style="margin-bottom: 30px;">Changelog</h2>
+
+    <div class="changelog-entry">
+      <h3>Versione 3.0.2 <span style="font-size: 0.8em; color: var(--text-muted);">(27 Gen 2026)</span></h3>
+      <ul>
+        <li>Rimozione completa del logo dall'interfaccia</li>
+      </ul>
+    </div>
 
     <div class="changelog-entry">
       <h3>Versione 3.0.1 <span style="font-size: 0.8em; color: var(--text-muted);">(27 Gen 2026)</span></h3>
