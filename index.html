@@ -1,578 +1,584 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
-  <title>TIMESTRING GENERATOR</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+  <title>TIMESTRING GENERATOR PRO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png">
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YHZ0XV6N9B"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
 
-    gtag('config', 'G-YHZ0XV6N9B');
-  </script>
+  <!-- Modern Typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- HTMX -->
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
   <style>
-    body {
-      background: linear-gradient(135deg, #2e7d32, #1b5e20 100%); /* tema verde */
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-family: 'Roboto', sans-serif;
-      margin: 0;
+    :root {
+      --primary: #4ade80;
+      /* Vibrant Green */
+      --primary-focus: #22c55e;
+      --accent: #8b5cf6;
+      /* Purple */
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
     }
-    .banner-logo {
-      width: 100%;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: rgba(255,255,255,0.85); /* bianco trasparente */
-      border-radius: 18px 18px 0 0;
-      padding: 1.1em 0 0.7em 0;
-      margin-bottom: 0.5em;
-    }
-
-    .banner-logo img {
-      width: 85%;
-      max-width: 420px;
-      height: auto;
-      display: block;
-      object-fit: contain;
-    }
-
-    .card {
-      position: relative; /* necessario per posizionare il cappello / non più usato */
-      z-index: 50;
-      background: #fff;
-      border-radius: 22px;
-      box-shadow: 0 6px 28px rgba(80, 36, 101, 0.19);
-      padding: 2.5em 2em 2em 2em;
-      max-width: 370px;
-      width: 100%;
-      text-align: center;
-      animation: floatIn 1s cubic-bezier(0.42,0,0.58,1);
-      margin-top: 48px;
-    }
-    @keyframes floatIn {
-      from { transform: translateY(80px); opacity: 0; }
-      to   { transform: translateY(0);   opacity: 1; }
-    }
-    label {
-      display: block;
-      margin-top: 1.1em;
-      color: #1b5e20; /* verde principale */
-      font-weight: 500;
-      text-align: left;
-    }
-    input, select {
-      width: 100%;
-      padding: 0.5em;
-      margin-top: 0.2em;
-      border: 1.5px solid #d1c4e9;
-      border-radius: 10px;
-      font-size: 1em;
-      background: #f8f7fa;
-      transition: border 0.2s;
-      font-family: 'Roboto', sans-serif;
-    }
-    input:focus, select:focus {
-      border: 1.5px solid #2e7d32;
-      outline: none;
-    }
-    button {
-      margin-top: 1.2em;
-      width: 100%;
-      padding: 0.7em;
-      border-radius: 8px;
-      border: none;
-      background: linear-gradient(90deg, #2e7d32 60%, #43a047);
-      color: #fff;
-      font-size: 1.08em;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-      letter-spacing: 0.05em;
-      transition: box-shadow 0.18s, transform 0.18s, background 0.2s;
-    }
-    button:hover {
-      background: linear-gradient(90deg,#43a047,#2e7d32 85%);
-      box-shadow: 0 4px 18px rgba(0,0,0,0.16);
-      transform: translateY(-2px) scale(1.02);
-    }
-    #output {
-      margin-top: 1.2em;
-      padding: 1em 0.7em;
-      border-radius: 10px;
-      border: 1px solid #e1bee7;
-      background: #ede7f6;
-      min-height: 1.5em;
-      color: #5c258d;
-      font-size: 1.1em;
-      font-weight: 500;
-      word-break: break-all;
-      letter-spacing: 0.01em;
-      box-shadow: 0 1px 6px rgba(124,67,189,0.04);
-    }
-    .version-label {
-      position: fixed;
-      left: 16px;
-      bottom: 16px;
-      font-size: 0.97em;
-      color: #fff;
-      background: rgba(46,125,50,0.95);
-      padding: 5px 16px;
-      border-radius: 13px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.16);
-      z-index: 100;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      user-select: none;
-    }
-    .reset-btn {
-      position: fixed;
-      right: 16px; /* Posizionato in basso a destra */
-      left: auto;
-      bottom: 16px;
-      font-size: 0.85em;
-      color: rgba(255,255,255,0.98);
-      background: rgba(46,125,50,0.95);
-      padding: 8px 14px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(124,67,189,0.12);
-      transition: all 0.2s ease;
-      z-index: 100;
-      width: auto; /* larghezza adattiva a destra */
-      max-width: calc(100% - 32px); /* Responsive su schermi piccoli */
-      min-width: 140px;
-      text-align: center;
-    }
-    .reset-btn:hover {
-      background: rgba(35,97,40,0.95);
-      color: white;
-      transform: translateY(-1px); /* leggera sollevamento all'hover */
-      box-shadow: 0 3px 12px rgba(46,125,50,0.2);
-    }
-
-    /* Changelog tab styles */
-    .changelog-tab {
-      position: fixed;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%); /* centrata verticalmente */
-      background: rgba(124,67,189,0.85);
-      color: white;
-      padding: 12px 8px;
-      writing-mode: vertical-lr;
-      text-orientation: mixed;
-      cursor: pointer;
-      border-radius: 0 8px 8px 0;
-      box-shadow: 2px 0 12px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-      z-index: 1000;
-      user-select: none;
-      font-size: 0.9em;
-      letter-spacing: 0.1em;
-    }
-    .changelog-tab:hover {
-      background: rgba(124,67,189,0.95);
-      padding-left: 12px;
-    }
-    @media (max-width: 768px) {
-      .changelog-tab {
-        top: 20px; /* Ancora più in alto su mobile */
-        transform: none; /* rimuove il translate per mobile */
-      }
-    }
-    /* Evita che i fixed elements (version-label, reset-btn) sovrappongano il contenuto
-       su viewport molto strette: aggiungiamo padding-bottom al body per lasciare spazio
-       ai controlli fissi e spostiamo leggermente gli elementi se necessario. */
-    @media (max-width: 480px) {
-      body {
-        padding-bottom: 120px; /* lascia spazio ai controlli fissi nella parte bassa */
-      }
-      .version-label,
-      .reset-btn {
-        bottom: 20px; /* aumenta lo spazio dal fondo per evitare sovrapposizioni */
-      }
-    }
-
-    /* Rimosse decorazioni natalizie (cappello, neve) */
-
-    /* Rimosse snowflakes e overlay Grinch */
-
-    .changelog-panel {
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 300px;
-      background: white;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      z-index: 999;
-      box-shadow: 2px 0 15px rgba(0,0,0,0.1);
-      overflow-y: auto;
+      color: var(--text);
+      overflow-x: hidden;
       padding: 20px;
     }
-    .changelog-panel.open {
-      transform: translateX(0);
+
+    /* Ambient Light Effects */
+    .ambient-light {
+      position: fixed;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: var(--primary);
+      filter: blur(150px);
+      opacity: 0.15;
+      z-index: -1;
+      animation: move 20s infinite alternate;
     }
 
-    .changelog-content {
-      padding-right: 10px;
+    @keyframes move {
+      from {
+        transform: translate(-50%, -50%);
+      }
+
+      to {
+        transform: translate(50%, 50%);
+      }
     }
-    .changelog-content h2 {
-      color: #7c43bd;
-      font-size: 1.2em;
-      margin: 0 0 1em;
-      border-bottom: 2px solid #ede7f6;
-      padding-bottom: 0.5em;
+
+    .container {
+      width: 100%;
+      max-width: 450px;
+      z-index: 10;
     }
-    .changelog-version {
-      margin-bottom: 1.5em;
+
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 32px;
+      padding: 40px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .changelog-version h3 {
-      color: #5c258d;
-      font-size: 1.1em;
-      margin: 0 0 0.5em;
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-container img {
+      width: 120px;
+      height: auto;
+      filter: drop-shadow(0 0 10px rgba(74, 222, 128, 0.3));
+      transition: transform 0.3s ease;
+    }
+
+    .logo-container img:hover {
+      transform: scale(1.05);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 30px;
+      letter-spacing: -0.025em;
+      background: linear-gradient(to right, #fff, var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      margin-left: 4px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 14px 18px;
+      color: var(--text);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.15);
+    }
+
+    select option {
+      background: #1e1b4b;
+      color: white;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: var(--primary);
+      color: #064e3b;
+      border: none;
+      padding: 16px;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary:hover {
+      background: #86efac;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -5px rgba(74, 222, 128, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    #output-card {
+      margin-top: 30px;
+      padding: 24px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 20px;
+      border: 1px dashed var(--glass-border);
+      text-align: center;
+      min-height: 80px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      transition: all 0.3s ease;
     }
-    .changelog-version .version-date {
-      font-size: 0.85em;
-      color: #666;
-      font-weight: normal;
+
+    #output {
+      font-family: 'Outfit', monospace;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--primary);
+      word-break: break-all;
     }
-    .changelog-version ul {
-      margin: 0;
-      padding-left: 20px;
-      color: #444;
+
+    .footer-controls {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      z-index: 100;
     }
-    .changelog-version li {
-      margin-bottom: 0.4em;
+
+    .glass-badge {
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .glass-badge:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    #changelog-panel {
+      position: fixed;
+      top: 0;
+      left: -350px;
+      width: 320px;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(20px);
+      z-index: 1000;
+      padding: 40px 30px;
+      transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      border-right: 1px solid var(--glass-border);
+      overflow-y: auto;
+    }
+
+    #changelog-panel.open {
+      left: 0;
+    }
+
+    .changelog-entry {
+      margin-bottom: 30px;
+    }
+
+    .changelog-entry h3 {
+      font-size: 1rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .changelog-entry ul {
+      list-style: none;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .changelog-entry li {
+      margin-bottom: 8px;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .changelog-entry li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+    }
+
+    .close-changelog {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Responsive Improvements */
+    @media (max-width: 480px) {
+      .glass-card {
+        padding: 30px 20px;
+      }
+
+      .footer-controls {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        bottom: 20px;
+      }
     }
   </style>
 </head>
+
 <body>
-  <div class="card">
-    <div class="banner-logo">
-      <img src="logo-top.png" alt="TIMESTRING GENERATOR" />
+  <div class="ambient-light"></div>
+
+  <div class="container">
+    <div class="glass-card">
+      <div class="logo-container">
+        <img src="logo-top.png" alt="Logo">
+      </div>
+      <h1>TIMESTRING GENERATOR</h1>
+
+      <!-- HTMX triggers an update on any input change -->
+      <form id="gen-form" hx-trigger="input, change" hx-post="/mock-generate" hx-swap="none" on-submit="return false;">
+
+        <div class="form-group">
+          <label for="duration">Durata (ore)</label>
+          <input type="number" id="duration" name="duration" min="0" step="0.5" value="8" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="form-group">
+            <label for="start">Inizio</label>
+            <input type="time" id="start" name="start" value="09:00" required>
+          </div>
+          <div class="form-group">
+            <label for="end">Fine</label>
+            <input type="time" id="end" name="end" value="18:00" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Categoria</label>
+          <select id="category" name="category">
+            <option value="AVA">AVA</option>
+            <option value="PK">PK</option>
+            <option value="PAR">PAR</option>
+            <option value="PP">PP</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="subcategory-group">
+          <label for="subcategory">Sotto-categoria</label>
+          <select id="subcategory" name="subcategory">
+            <option value="FERIE">FERIE</option>
+            <option value="ROL">ROL</option>
+            <option value="EX-FEST">EX-FEST</option>
+            <option value="PAR">PAR</option>
+          </select>
+        </div>
+
+        <button type="button" class="btn-primary" id="copy-btn" onclick="generateAndCopy()">
+          <span id="btn-text">Genera e Copia</span>
+        </button>
+      </form>
+
+      <div id="output-card">
+        <div id="output">8 ore - AVA - FERIE - 09:00-18:00</div>
+      </div>
     </div>
-    <form onsubmit="event.preventDefault(); generateString();">
-      <label for="duration">Durata (ore):</label>
-      <input type="number" id="duration" min="0" step="0.5" required value="8" autofocus>
-
-      <label for="start">Ora di inizio:</label>
-      <input type="time" id="start" required value="09:00">
-
-      <label for="end">Ora di fine:</label>
-      <input type="time" id="end" required value="18:00">
-
-      <label for="category">Categoria:</label>
-      <select id="category" onchange="toggleSubcategory()">
-        <option value="AVA">AVA</option>
-        <option value="PK">PK</option>
-        <option value="PAR">PAR</option>
-        <option value="PP">PP</option>
-      </select>
-
-      <div id="subcategory-group">
-        <label for="subcategory">Sotto-categoria:</label>
-        <select id="subcategory">
-          <option value="FERIE">FERIE</option>
-          <option value="ROL">ROL</option>
-          <option value="EX-FEST">EX-FEST</option>
-          <option value="PAR">PAR</option>
-        </select>
-      </div>
-
-  <button type="button" id="generate-copy-btn" onclick="generateAndCopy()">Genera Stringa e Copia negli appunti</button>
-  <div id="output"></div>
-    </form>
   </div>
-  <div class="version-label">versione 2.0.17</div>
-  <button onclick="resetSavedFields()" class="reset-btn" title="Ripristina i valori predefiniti">Ripristina valori predefiniti</button>
 
-  <div class="changelog-tab" onclick="toggleChangelog()">Changelog</div>
-  <div class="changelog-panel" id="changelogPanel">
-    <div class="changelog-content">
-      <h2>Cronologia modifiche</h2>
+  <div class="footer-controls">
+    <a href="javascript:void(0)" class="glass-badge" onclick="toggleChangelog()">Changelog</a>
+    <a href="javascript:void(0)" class="glass-badge" onclick="resetDefaults()">Reset</a>
+    <div class="glass-badge" style="cursor: default;">v3.0.0</div>
+  </div>
 
-      <div class="changelog-version">
-        <h3>Versione 2.0.17 <span class="version-date">7 Gennaio 2026</span></h3>
-        <ul>
-          <li>Tema aggiornato: sostituiti i rossi con una palette verde</li>
-          <li>Rimossa la neve animata dallo sfondo</li>
-          <li>Rimosso il cappello di Babbo Natale</li>
-          <li>Disabilitato lo shortcut/easter-egg per mostrare il Grinch</li>
-        </ul>
-      </div>
+  <div id="changelog-panel">
+    <button class="close-changelog" onclick="toggleChangelog()">&times;</button>
+    <h2 style="margin-bottom: 30px;">Changelog</h2>
 
-      <div class="changelog-version">
-        <h3>Versione 2.0.16 <span class="version-date">24 Novembre 2025</span></h3>
-        <ul>
-          <li>Abbassata la tab del changelog a metà schermo per migliorare l'accessibilità</li>
-        </ul>
-      </div>
+    <div class="changelog-entry">
+      <h3>Versione 3.0.0</h3>
+      <ul>
+        <li>Refactor completo con <strong>HTMX</strong></li>
+        <li>Design <strong>Premium Glassmorphism</strong></li>
+        <li>Nuova palette di colori "Neon Green & Deep Purple"</li>
+        <li>Migliorato il feedback visivo e le animazioni</li>
+      </ul>
+    </div>
 
-      <div class="changelog-version">
-        <h3>Versione 2.0.15 <span class="version-date">24 Novembre 2025</span></h3>
-        <ul>
-          <li>Correzione bug</li>
-        </ul>
-      </div>
+    <div class="changelog-entry">
+      <h3>Versione 2.0.17 <span style="font-size: 0.8em; color: var(--text-muted);">(7 Gen 2026)</span></h3>
+      <ul>
+        <li>Tema aggiornato: sostituiti i rossi con una palette verde</li>
+        <li>Rimossa la neve animata dallo sfondo</li>
+        <li>Rimosso il cappello di Babbo Natale</li>
+      </ul>
+    </div>
 
-      <div class="changelog-version">
-        <h3>Versione 2.0.14 <span class="version-date">20 Novembre 2025</span></h3>
-        <ul>
-          <li>Aggiunta decorazione natalizia: neve animata sullo sfondo e cappello di Babbo Natale in alto a sinistra del frame bianco</li>
-          <li>Ritoccati i colori dell'interfaccia verso tonalità rosse (tema natalizio) e piccoli aggiustamenti di contrasto</li>
-          <li>Migliorato il comportamento mobile: padding-bottom e posizionamento dei controlli fissi per evitare sovrapposizioni</li>
-        </ul>
-      </div>
+    <div class="changelog-entry">
+      <h3>Versione 2.0.16 <span style="font-size: 0.8em; color: var(--text-muted);">(24 Nov 2025)</span></h3>
+      <ul>
+        <li>Abbassata la tab del changelog a metà schermo per migliorare l'accessibilità</li>
+      </ul>
+    </div>
 
-      <div class="changelog-version">
-        <h3>Versione 2.0.12 <span class="version-date">03 Novembre 2025</span></h3>
-        <ul>
-          <li>Spostato il pulsante "Ripristina valori predefiniti" in basso a destra per evitare sovrapposizioni e migliorare l'accessibilità</li>
-          <li>Stile aggiornato: larghezza adattiva, margini e comportamento responsive migliorati</li>
-        </ul>
-      </div>
+    <div class="changelog-entry">
+      <h3>Versione 2.0.15 <span style="font-size: 0.8em; color: var(--text-muted);">(24 Nov 2025)</span></h3>
+      <ul>
+        <li>Correzione bug</li>
+      </ul>
+    </div>
 
-      <div class="changelog-version">
-        <h3>Versione 2.0.11 <span class="version-date">24 Ottobre 2025</span></h3>
-        <ul>
-          <li>Pulsante "Ripristina valori predefiniti" ora ha la stessa larghezza del bottone principale</li>
-          <li>Pulsante reset centrato e responsive, non copre più la versione</li>
-          <li>Ulteriori miglioramenti di layout e usabilità</li>
-        </ul>
-      </div>
+    <div class="changelog-entry">
+      <h3>Versione 2.0.14 <span style="font-size: 0.8em; color: var(--text-muted);">(20 Nov 2025)</span></h3>
+      <ul>
+        <li>Aggiunta decorazione natalizia</li>
+        <li>Ritoccati i colori dell'interfaccia</li>
+        <li>Migliorato il comportamento mobile</li>
+      </ul>
+    </div>
 
-      <div class="changelog-version">
-        <h3>Versione 2.0.10 <span class="version-date">24 Ottobre 2025</span></h3>
-        <ul>
-          <li>Risolto problema di duplicazione del pulsante reset</li>
-          <li>Uniformata etichetta del pulsante reset</li>
-          <li>Corretti alcuni problemi di compatibilità</li>
-        </ul>
-      </div>
+    <div class="changelog-entry">
+      <h3>Versione 2.0.12 <span style="font-size: 0.8em; color: var(--text-muted);">(03 Nov 2025)</span></h3>
+      <ul>
+        <li>Spostato il pulsante reset in basso a destra</li>
+        <li>Stile aggiornato e layout responsive migliorato</li>
+      </ul>
+    </div>
 
-      <div class="changelog-version">
-        <h3>Versione 2.0.8 <span class="version-date">24 Ottobre 2025</span></h3>
-        <ul>
-          <li>Aggiunto pannello changelog</li>
-          <li>Migliorato il sistema di persistenza dei dati</li>
-        </ul>
-      </div>
+    <div class="changelog-entry">
+      <h3>Versione 2.0.11 <span style="font-size: 0.8em; color: var(--text-muted);">(24 Ott 2025)</span></h3>
+      <ul>
+        <li>Pulsante reset centrato e responsive</li>
+        <li>Ulteriori miglioramenti di layout e usabilità</li>
+      </ul>
+    </div>
 
-      <div class="changelog-version">
-        <h3>Versione 2.0.7 <span class="version-date">23 Ottobre 2025</span></h3>
-        <ul>
-          <li>Aggiunto pulsante di reset per i valori salvati</li>
-          <li>Migliorata la persistenza dei dati tra sessioni</li>
-        </ul>
-      </div>
+    <div class="changelog-entry">
+      <h3>Versione 2.0.10 <span style="font-size: 0.8em; color: var(--text-muted);">(24 Ott 2025)</span></h3>
+      <ul>
+        <li>Risolto problema di duplicazione del pulsante reset</li>
+        <li>Corretti problemi di compatibilità</li>
+      </ul>
+    </div>
 
-      <div class="changelog-version">
-        <h3>Versione 2.0.6 <span class="version-date">22 Ottobre 2025</span></h3>
-        <ul>
-          <li>Unificati i pulsanti "Genera" e "Copia" in un unico bottone</li>
-          <li>Migliorato il feedback visivo della copia</li>
-        </ul>
-      </div>
+    <div class="changelog-entry">
+      <h3>Versione 2.0.8 <span style="font-size: 0.8em; color: var(--text-muted);">(24 Ott 2025)</span></h3>
+      <ul>
+        <li>Aggiunto pannello changelog</li>
+        <li>Migliorato il sistema di persistenza dei dati</li>
+      </ul>
+    </div>
 
-      <div class="changelog-version">
-        <h3>Versione 2.0.0 <span class="version-date">20 Ottobre 2025</span></h3>
-        <ul>
-          <li>Nuovo design dell'interfaccia</li>
-          <li>Aggiunta gestione sotto-categorie per AVA</li>
-          <li>Migliorata la validazione dei campi</li>
-        </ul>
-      </div>
+    <div class="changelog-entry">
+      <h3>Versione 2.0.7 <span style="font-size: 0.8em; color: var(--text-muted);">(23 Ott 2025)</span></h3>
+      <ul>
+        <li>Aggiunto pulsante di reset per i valori salvati</li>
+        <li>Migliorata la persistenza dei dati tra sessioni</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry">
+      <h3>Versione 2.0.6 <span style="font-size: 0.8em; color: var(--text-muted);">(22 Ott 2025)</span></h3>
+      <ul>
+        <li>Unificati i pulsanti "Genera" e "Copia"</li>
+        <li>Migliorato il feedback visivo della copia</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry">
+      <h3>Versione 2.0.0 <span style="font-size: 0.8em; color: var(--text-muted);">(20 Ott 2025)</span></h3>
+      <ul>
+        <li>Nuovo design dell'interfaccia</li>
+        <li>Aggiunta gestione sotto-categorie per AVA</li>
+        <li>Migliorata la validazione dei campi</li>
+      </ul>
     </div>
   </div>
 
   <script>
-    window.onload = function() {
-      let durationInput = document.getElementById("duration");
-      durationInput.focus();
-      durationInput.select();
-      // Ripristina valori salvati (cookie o localStorage)
-      restoreSavedFields();
-      // Toggle iniziale senza salvare (altrimenti sovrascrive i valori restaurati)
-      toggleSubcategory(false);
-
-      // Aggiungi listeners per salvare i campi appena vengono modificati
-      try {
-        const durationEl = document.getElementById('duration');
-        const startEl = document.getElementById('start');
-        const endEl = document.getElementById('end');
-        const categoryEl = document.getElementById('category');
-        const subcatEl = document.getElementById('subcategory');
-
-        durationEl.addEventListener('input', e => saveField('duration', e.target.value));
-        startEl.addEventListener('change', e => saveField('start', e.target.value));
-        endEl.addEventListener('change', e => saveField('end', e.target.value));
-        subcatEl.addEventListener('change', e => saveField('subcategory', e.target.value));
-        categoryEl.addEventListener('change', e => { toggleSubcategory(true); });
-      } catch(e) {
-        // elementi non trovati: non fare nulla
+    // HTMX Logic: Intercept the mock-post to update local state
+    // Since we don't have a backend, we use HTMX events to trigger logic
+    document.body.addEventListener('htmx:beforeRequest', function (evt) {
+      if (evt.detail.pathInfo.requestPath === '/mock-generate') {
+        evt.preventDefault(); // Stop the actual network request
+        updateLogic();
       }
-    };
+    });
 
-    // Persistence helpers: prefer localStorage (reliable), fall back to cookies
-    function setLocal(name, value) {
-      try { localStorage.setItem(name, value); return true; } catch(e) { return false; }
-    }
-    function getLocal(name) {
-      try { return localStorage.getItem(name); } catch(e) { return null; }
-    }
-    function removeLocal(name) {
-      try { localStorage.removeItem(name); } catch(e) {}
-    }
+    function updateLogic() {
+      const duration = document.getElementById('duration').value;
+      const start = document.getElementById('start').value;
+      const end = document.getElementById('end').value;
+      const category = document.getElementById('category').value;
+      const subcategory = document.getElementById('subcategory').value;
+      const subcatGroup = document.getElementById('subcategory-group');
 
-    function setCookie(name, value, days) {
-      try {
-        const expires = new Date(Date.now() + (days||365)*24*60*60*1000).toUTCString();
-        document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
-        return true;
-      } catch(e) { return false; }
-    }
-    function getCookie(name) {
-      try {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        if(match) return decodeURIComponent(match[2]);
-      } catch(e) {}
-      return null;
-    }
-
-    function saveField(name, value) {
-      const key = 'tz_' + name;
-      // try localStorage first
-      if(!setLocal(key, value)) {
-        // fallback to cookie
-        setCookie(key, value, 365);
-      }
-    }
-
-    function restoreSavedFields() {
-      const fields = ['duration','start','end','category','subcategory'];
-      fields.forEach(f => {
-        const key = 'tz_' + f;
-        let v = getLocal(key);
-        if(v === null) v = getCookie(key);
-        if(v !== null && v !== 'null' && v !== '') {
-          const el = document.getElementById(f);
-          if(el) el.value = v;
-        }
-      });
-    }
-
-    function resetSavedFields() {
-      if(!confirm('Vuoi ripristinare i valori predefiniti?')) return;
-
-      // Pulisci localStorage e cookie per tutti i campi
-      ['duration','start','end','category','subcategory'].forEach(f => {
-        const key = 'tz_' + f;
-        removeLocal(key);
-        setCookie(key, '', -1); // expires in past = delete
-      });
-
-      // Reimposta i valori predefiniti
-      document.getElementById('duration').value = '8';
-      document.getElementById('start').value = '09:00';
-      document.getElementById('end').value = '18:00';
-      document.getElementById('category').value = 'AVA';
-      document.getElementById('subcategory').value = 'FERIE';
-      toggleSubcategory(true);
-
-      // Feedback visivo
-      const btn = document.querySelector('.reset-btn');
-      const originalText = btn.innerText;
-      btn.innerText = '✓ Resettato';
-      setTimeout(() => { btn.innerText = originalText; }, 1400);
-    }
-
-    function toggleSubcategory(save = true) {
-      let category = document.getElementById("category").value;
-      let subcategoryGroup = document.getElementById("subcategory-group");
-      if(category === "AVA") {
-        subcategoryGroup.style.display = "block";
+      // Toggle subcategory visibility
+      if (category === 'AVA') {
+        subcatGroup.style.display = 'block';
       } else {
-        subcategoryGroup.style.display = "none";
-        document.getElementById("subcategory").value = ""; // Resetta il valore
-        // salva lo stato della subcategory anche quando nascosta, solo se è una modifica utente
-        if(save) saveField('subcategory', '');
-      }
-      // salva la categoria quando cambia (solo se richiesta)
-      if(save) saveField('category', category);
-    }
-
-    // Effetti natalizi rimossi nella 2.0.17
-    function generateString() {
-      let duration = document.getElementById("duration").value;
-      let start = document.getElementById("start").value;
-      let end = document.getElementById("end").value;
-      let category = document.getElementById("category").value;
-      let subcategory = document.getElementById("subcategory").value;
-      if(!duration || !start || !end) {
-        document.getElementById("output").innerText = "Compila tutti i campi!";
-        return;
+        subcatGroup.style.display = 'none';
       }
 
+      let result = "";
       if (category === "AVA") {
-        let subcategory = document.getElementById("subcategory").value;
         result = `${duration} ore - ${category} - ${subcategory} - ${start}-${end}`;
       } else {
         result = `${duration} ore - ${category} - ${start}-${end}`;
       }
 
-      document.getElementById("output").innerText = result;
-      // salva i campi correnti
-      saveField('duration', duration);
-      saveField('start', start);
-      saveField('end', end);
-      saveField('category', category);
-      if(category === 'AVA') saveField('subcategory', subcategory);
-    }
-    function copyString() {
-      let text = document.getElementById("output").innerText;
-      if(text && text !== "Compila tutti i campi!") {
-        return navigator.clipboard.writeText(text).then(() => true).catch(() => false);
-      }
-      return Promise.resolve(false);
+      document.getElementById('output').innerText = result;
+      saveFields();
     }
 
     function generateAndCopy() {
-      // Genera la stringa
-      generateString();
+      updateLogic();
+      const text = document.getElementById('output').innerText;
+      const btn = document.getElementById('copy-btn');
+      const btnText = document.getElementById('btn-text');
 
-      // Copia e mostra feedback sul bottone
-      const btn = document.getElementById('generate-copy-btn');
-      const originalText = btn.innerText;
-      copyString().then(success => {
-        if(success) {
-          btn.innerText = "✔ Copiato!";
-        } else {
-          btn.innerText = "Errore copia";
-        }
-        setTimeout(() => { btn.innerText = originalText; }, 1400);
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btnText.innerText;
+        btnText.innerText = "✔ Copiato!";
+        btn.style.background = "#fff";
+        btn.style.color = "#000";
+
+        setTimeout(() => {
+          btnText.innerText = originalText;
+          btn.style.background = "var(--primary)";
+          btn.style.color = "#064e3b";
+        }, 2000);
       });
     }
 
+    function saveFields() {
+      const fields = ['duration', 'start', 'end', 'category', 'subcategory'];
+      fields.forEach(f => {
+        localStorage.setItem('zs_' + f, document.getElementById(f).value);
+      });
+    }
+
+    function restoreFields() {
+      const fields = ['duration', 'start', 'end', 'category', 'subcategory'];
+      fields.forEach(f => {
+        const val = localStorage.getItem('zs_' + f);
+        if (val) {
+          document.getElementById(f).value = val;
+        }
+      });
+      updateLogic();
+    }
+
+    function resetDefaults() {
+      if (confirm('Ripristinare i valori predefiniti?')) {
+        localStorage.clear();
+        window.location.reload();
+      }
+    }
+
     function toggleChangelog() {
-      const panel = document.getElementById('changelogPanel');
+      document.getElementById('changelogPanel'); // Old ID check
+      const panel = document.getElementById('changelog-panel');
       panel.classList.toggle('open');
     }
 
-    // Easter-egg Grinch rimosso nella 2.0.17
+    // Initialize
+    window.onload = restoreFields;
   </script>
 </body>
+
 </html>
