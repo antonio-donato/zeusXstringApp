@@ -331,7 +331,7 @@
           <input type="number" id="duration" name="duration" min="0" step="0.5" value="8" required>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div id="time-fields-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
           <div class="form-group">
             <label for="start">Inizio</label>
             <input type="time" id="start" name="start" value="09:00" required>
@@ -375,13 +375,21 @@
     <div class="footer-controls">
       <a href="javascript:void(0)" class="glass-badge" onclick="toggleChangelog()">Changelog</a>
       <a href="javascript:void(0)" class="glass-badge" onclick="resetDefaults()">Reset</a>
-      <div class="glass-badge" style="cursor: default;">v3.0.2</div>
+      <div class="glass-badge" style="cursor: default;">v3.1.0</div>
     </div>
   </div>
 
   <div id="changelog-panel">
     <button class="close-changelog" onclick="toggleChangelog()">&times;</button>
     <h2 style="margin-bottom: 30px;">Changelog</h2>
+
+    <div class="changelog-entry">
+      <h3>Versione 3.1.0 <span style="font-size: 0.8em; color: var(--text-muted);">(2 Apr 2026)</span></h3>
+      <ul>
+        <li>Disabilitati e nascosti i campi con label di inizio e fine quando la durata supera 8 ore</li>
+        <li>Rimossa la parte oraria dalla stringa generata per durate superiori a 8 ore</li>
+      </ul>
+    </div>
 
     <div class="changelog-entry">
       <h3>Versione 3.0.2 <span style="font-size: 0.8em; color: var(--text-muted);">(27 Gen 2026)</span></h3>
@@ -508,13 +516,30 @@
       }
     });
 
+    function toggleTimeFields(durationValue) {
+      const startField = document.getElementById('start');
+      const endField = document.getElementById('end');
+      const timeFieldsGroup = document.getElementById('time-fields-group');
+      const exceedsSingleDay = durationValue > 8;
+
+      startField.disabled = exceedsSingleDay;
+      endField.disabled = exceedsSingleDay;
+      startField.required = !exceedsSingleDay;
+      endField.required = !exceedsSingleDay;
+      timeFieldsGroup.style.display = exceedsSingleDay ? 'none' : 'grid';
+    }
+
     function updateLogic() {
       const duration = document.getElementById('duration').value;
+      const numericDuration = Number.parseFloat(duration) || 0;
       const start = document.getElementById('start').value;
       const end = document.getElementById('end').value;
       const category = document.getElementById('category').value;
       const subcategory = document.getElementById('subcategory').value;
       const subcatGroup = document.getElementById('subcategory-group');
+      const exceedsSingleDay = numericDuration > 8;
+
+      toggleTimeFields(numericDuration);
 
       // Toggle subcategory visibility
       if (category === 'AVA') {
@@ -525,9 +550,13 @@
 
       let result = "";
       if (category === "AVA") {
-        result = `${duration} ore - ${category} - ${subcategory} - ${start}-${end}`;
+        result = `${duration} ore - ${category} - ${subcategory}`;
       } else {
-        result = `${duration} ore - ${category} - ${start}-${end}`;
+        result = `${duration} ore - ${category}`;
+      }
+
+      if (!exceedsSingleDay) {
+        result = `${result} - ${start}-${end}`;
       }
 
       document.getElementById('output').innerText = result;
